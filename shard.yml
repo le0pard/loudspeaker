@@ -13,6 +13,8 @@ dependencies:
     github: schovi/baked_file_system
   dexter:
     github: luckyframework/dexter
+  jwt:
+    github: crystal-community/jwt
   sqlite3:
     github: crystal-lang/crystal-sqlite3
   readline:
