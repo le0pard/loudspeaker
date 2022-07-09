@@ -4,7 +4,7 @@ module WebAdmin
   class Base
     def initialize
       # allow @routes to save Proc as its value
-      @routes = {} of String => ( -> String)
+      @routes = {} of String => (-> String)
     end
 
     def run
@@ -28,7 +28,7 @@ module WebAdmin
     end
 
     # add method to dynamically add routes
-    def get(route, &block : ( -> String))
+    def get(route, &block : (-> String))
       @routes[route.to_s] = block
     end
   end
