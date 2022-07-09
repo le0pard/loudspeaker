@@ -9,10 +9,22 @@ description: |
   Short description of loudspeaker
 
 dependencies:
+  baked_file_system:
+    github: schovi/baked_file_system
+  dexter:
+    github: luckyframework/dexter
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-  pg:
-    github: will/crystal-pg
+  readline:
+    github: crystal-lang/crystal-readline
+  totem:
+    github: icyleaf/totem
+  redis:
+    github: stefanwille/crystal-redis
+  ncurses:
+    github: agatan/ncurses.cr
+  hardware:
+    github: crystal-community/hardware
 
 # development_dependencies:
 #   webmock:
