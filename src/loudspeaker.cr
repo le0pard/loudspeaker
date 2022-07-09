@@ -1,3 +1,5 @@
+require "./loudspeaker/version"
+
 require "option_parser"
 
 OptionParser.parse do |parser|
@@ -11,4 +13,9 @@ OptionParser.parse do |parser|
     puts parser
     exit
   end
+end
+
+module Loudspeaker
+  # include Loudspeaker::Handlers
+  # include Loudspeaker::Annotations
 end
