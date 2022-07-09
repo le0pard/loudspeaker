@@ -40,9 +40,9 @@ shards:
     git: https://github.com/kemalcr/kemal.git
     version: 1.2.0
 
-  ncurses:
-    git: https://github.com/agatan/ncurses.cr.git
-    version: 0.1.0+git.commit.a667a848b336da831dd7c69f793d660538fcc0de
+  kemal-session:
+    git: https://github.com/kemalcr/kemal-session.git
+    version: 1.0.0
 
   openssl_ext:
     git: https://github.com/spider-gazelle/openssl_ext.git
