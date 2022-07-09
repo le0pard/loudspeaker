@@ -1,5 +1,13 @@
 version: 2.0
 shards:
+  ameba:
+    git: https://github.com/crystal-ameba/ameba.git
+    version: 1.0.0
+
+  backtracer:
+    git: https://github.com/sija/backtracer.cr.git
+    version: 1.2.1
+
   baked_file_system:
     git: https://github.com/schovi/baked_file_system.git
     version: 0.10.0
@@ -12,9 +20,17 @@ shards:
     git: https://github.com/luckyframework/dexter.git
     version: 0.3.4
 
+  exception_page:
+    git: https://github.com/crystal-loot/exception_page.git
+    version: 0.2.2
+
   hardware:
     git: https://github.com/crystal-community/hardware.git
     version: 0.5.2
+
+  kemal:
+    git: https://github.com/kemalcr/kemal.git
+    version: 1.2.0
 
   ncurses:
     git: https://github.com/agatan/ncurses.cr.git
@@ -27,6 +43,10 @@ shards:
   popcorn:
     git: https://github.com/icyleaf/popcorn.git
     version: 0.3.0
+
+  radix:
+    git: https://github.com/luislavena/radix.git
+    version: 0.4.1
 
   readline:
     git: https://github.com/crystal-lang/crystal-readline.git

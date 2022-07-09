@@ -20,5 +20,8 @@ jobs:
       - name: Install dependencies
         run: shards install
 
+      - name: Run linter
+        run: crystal bin/ameba.cr
+
       - name: Run tests
         run: crystal spec --order random

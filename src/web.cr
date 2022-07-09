@@ -1,51 +1,16 @@
-require "http/server"
+require "kemal"
 
-module WebAdmin
-  class Base
-    def initialize
-      # allow @routes to save Proc as its value
-      @routes = {} of String => (-> String)
-    end
+serve_static false
 
-    def run
-      server = HTTP::Server.new([
-        HTTP::ErrorHandler.new,
-        HTTP::LogHandler.new,
-        HTTP::CompressHandler.new,
-      ]) do |context|
-        if @routes.has_key?(context.request.path.to_s)
-          # add call method to proc when returned
-          context.response.content_type = "text/plain"
-          context.response.print(@routes[context.request.path.to_s].call)
-        else
-          context.response.status = HTTP::Status::NOT_FOUND
-          context.response.print("Not found")
-        end
-      end
-      address = server.bind_tcp "0.0.0.0", 8080
-      puts "Listening on http://#{address}"
-      server.listen
-    end
-
-    # add method to dynamically add routes
-    def get(route, &block : (-> String))
-      @routes[route.to_s] = block
-    end
-  end
+# Matches GET "http://host:port/"
+get "/" do
+  "Hello World!"
 end
 
-app = WebAdmin::Base.new
-
-# the app will respond with the returned string
-app.get "/" do
-  "hello world"
+# Creates a WebSocket handler.
+# Matches "ws://host:port/socket"
+ws "/socket" do |socket|
+  socket.send "Hello from Kemal!"
 end
 
-# you can also exec code in block and return a string value
-app.get "/app" do
-  a = "hello 1111"
-  b = "world 1111"
-  "#{a} #{b}"
-end
-
-app.run
+Kemal.run
