@@ -1,7 +1,5 @@
 require "kemal"
 
-
-
 # Matches GET "http://host:port/"
 get "/" do
   "Hello World!"
@@ -14,4 +12,4 @@ ws "/socket" do |socket|
 end
 
 Kemal.config.serve_static = false
-Kemal.run
+Kemal.run(3000)
