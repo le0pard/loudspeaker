@@ -5,8 +5,8 @@ license: MIT
 authors:
   - Oleksii Vasyliev <leopard.not.a@gmail.com>
 
-# description: |
-#   Short description of loudspeaker
+description: |
+  Short description of loudspeaker
 
 dependencies:
   sqlite3:
