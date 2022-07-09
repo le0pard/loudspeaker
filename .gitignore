@@ -5,4 +5,4 @@
 /.shards/
 *.dwarf
 
-
+.DS_Store
