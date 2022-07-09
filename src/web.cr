@@ -1,6 +1,6 @@
 require "kemal"
 
-serve_static false
+
 
 # Matches GET "http://host:port/"
 get "/" do
@@ -13,4 +13,5 @@ ws "/socket" do |socket|
   socket.send "Hello from Kemal!"
 end
 
+Kemal.config.serve_static = false
 Kemal.run
