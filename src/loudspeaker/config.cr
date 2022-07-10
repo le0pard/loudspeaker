@@ -10,10 +10,19 @@ module Loudspeaker
     property format : String
   end
 
+  struct ConfigInfoWeb
+    include JSON::Serializable
+
+    property enabled : Bool
+    property host_binding : String
+    property port : Int32
+  end
+
   struct ConfigInfo
     include JSON::Serializable
 
     property logger : ConfigInfoLogger
+    property web : ConfigInfoWeb
   end
 
   # config instance
@@ -37,6 +46,9 @@ module Loudspeaker
       # defaults
       totem.set_default("logger.level", "info")
       totem.set_default("logger.format", "text")
+      totem.set_default("web.enabled", true)
+      totem.set_default("web.host_binding", "0.0.0.0")
+      totem.set_default("web.port", 8000)
       # autoload
       if config_file.nil?
         totem.load!

@@ -1,5 +1,6 @@
 require "kemal"
 require "kemal-session"
+require "../config"
 require "./handlers/*"
 
 module Loudspeaker
@@ -38,12 +39,17 @@ module Loudspeaker
       end
 
       def start
+        if !Config.config.web.enabled
+          Log.debug { "Web server disabled" }
+          return
+        end
+
         Log.debug { "Starting web server" }
         {% if flag?(:release) %}
           Kemal.config.env = "production"
         {% end %}
-        Kemal.config.host_binding = "0.0.0.0"
-        Kemal.config.port = 3000
+        Kemal.config.host_binding = Config.config.web.host_binding
+        Kemal.config.port = Config.config.web.port
         Kemal.run
       end
     end
