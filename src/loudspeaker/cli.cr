@@ -1,31 +1,25 @@
-require "option_parser"
+require "clim"
+
+macro common_option
+  option "-c PATH", "--config=PATH", type: String,
+    desc: "Path to the config file"
+end
 
 module Loudspeaker
-  struct CLI
-    def initialize
-      cli_parser = OptionParser.parse do |parser|
-        parser.banner = "Welcome to Loudspeaker!"
+  class CLI < Clim
+    main do
+      desc "Welcome to Loudspeaker!"
+      usage "loudspeaker [sub_command] [options]"
+      help short: "-h"
+      version "Version #{Loudspeaker::VERSION}", short: "-v"
+      common_option
+      run do |opts|
+        puts "Welcome to Loudspeaker!"
+        puts
 
-        parser.on "-v", "--version", "Show version" do
-          puts "version 1.0"
-          exit
-        end
-        parser.on "-h", "--help", "Show help" do
-          puts parser
-          exit
-        end
-        parser.unknown_args { |args, _| puts "Remaining: #{args}" }
-        parser.invalid_option do |flag|
-          STDERR.puts "ERROR: #{flag} is not a valid option."
-          STDERR.puts parser
-          exit(1)
-        end
+        # empty ARGV so it won't be passed to Kemal
+        ARGV.clear
       end
-
-      cli_parser.parse
-    end
-
-    def run
     end
   end
 end

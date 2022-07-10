@@ -16,6 +16,10 @@ shards:
     git: https://github.com/spider-gazelle/bindata.git
     version: 1.10.0
 
+  clim:
+    git: https://github.com/at-grandpa/clim.git
+    version: 0.17.1
+
   db:
     git: https://github.com/crystal-lang/crystal-db.git
     version: 0.11.0

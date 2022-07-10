@@ -5,8 +5,7 @@ module Loudspeaker
   extend self
 
   def main
-    cli = Loudspeaker::CLI.new
-    cli.run
+    Loudspeaker::CLI.start(ARGV)
   end
 end
 

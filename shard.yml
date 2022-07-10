@@ -33,6 +33,9 @@ dependencies:
   hardware:
     github: crystal-community/hardware
     version: 0.5.2
+  clim:
+    github: at-grandpa/clim
+    version: 0.17.1
   mg:
    github: hkalexling/mg
    branch: master
