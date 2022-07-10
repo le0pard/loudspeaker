@@ -8,6 +8,7 @@ module Loudspeaker
       def call(context : HTTP::Server::Context)
         elapsed_time = Time.measure { call_next context }
         elapsed_text = elapsed_text(elapsed_time)
+
         Log.dexter.debug do
           {
             status:  context.response.status_code,
@@ -17,6 +18,7 @@ module Loudspeaker
             message: "Response from web",
           }
         end
+
         context
       end
 
