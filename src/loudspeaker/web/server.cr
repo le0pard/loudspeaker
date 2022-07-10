@@ -5,6 +5,8 @@ require "./handlers/*"
 module Loudspeaker
   module Web
     class Server
+      Log = ::Log.for("web server")
+
       def initialize
         Kemal.config.logging = false
 
@@ -19,7 +21,7 @@ module Loudspeaker
 
         {% if flag?(:release) %}
           # when building for relase, embed the static files in binary
-          # Logger.debug "We are in release mode. Using embedded static files."
+          Log.debug { "We are in release mode. Using embedded static files." }
           serve_static false
           add_handler Loudspeaker::Web::StaticHandler.new
         {% else %}
@@ -36,7 +38,7 @@ module Loudspeaker
       end
 
       def start
-        # Logger.debug "Starting Kemal server"
+        Log.debug { "Starting web server" }
         {% if flag?(:release) %}
           Kemal.config.env = "production"
         {% end %}
