@@ -18,14 +18,12 @@ module Loudspeaker
       version "Version #{Loudspeaker::VERSION}", short: "-v"
       common_option
       run do |opts|
-        puts "Loudspeaker!"
-        puts
+        Log.info { "Starting Loudspeaker" }
 
         # empty ARGV so it won't be passed to Kemal
         ARGV.clear
 
         Config.load(opts.config)
-        Log.info { Config.config.logger.level }
 
         Loudspeaker::Web.start
       end
