@@ -9,7 +9,7 @@ end
 
 module Loudspeaker
   class CLI < Clim
-    Log = ::Log.for("cli")
+    Log = ::Log.for(self)
 
     main do
       desc "Welcome to Loudspeaker!"

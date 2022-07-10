@@ -6,11 +6,9 @@ require "./handlers/*"
 module Loudspeaker
   module Web
     class Server
-      Log = ::Log.for("web server")
+      Log = ::Log.for(self)
 
       def initialize
-        Kemal.config.logging = false
-
         # Matches GET "http://host:port/"
         get "/" do
           "Hello World!"
@@ -29,12 +27,14 @@ module Loudspeaker
           serve_static({"gzip" => true, "dir_listing" => false})
         {% end %}
 
+        Kemal.config.logging = false
+        add_handler Loudspeaker::Web::LogHandler.new
+
         Kemal::Session.config do |config|
           config.cookie_name = "__loudspeaker_session"
           config.secret = "a_secret"
           config.timeout = 365.days
           # config.engine = Session::RedisEngine.new(host: "localhost", port: 6379, key_prefix: "session:")
-          # config.timeout = Time::Span.new(1, 0, 0)
         end
       end
 
