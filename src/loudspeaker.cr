@@ -10,4 +10,4 @@ module Loudspeaker
   end
 end
 
-Loudspeaker.main()
+Loudspeaker.main
