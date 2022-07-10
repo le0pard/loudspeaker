@@ -5,7 +5,6 @@ module Loudspeaker
   # include Loudspeaker::Annotations
 end
 
-
 require "option_parser"
 
 OptionParser.parse do |parser|
