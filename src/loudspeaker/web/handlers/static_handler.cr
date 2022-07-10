@@ -20,24 +20,20 @@ module Loudspeaker
     class StaticHandler < Kemal::Handler
       STATIC_DIRS = %w(/assets /favicon.ico /robots.txt)
 
-      def request_path_startswith(env, ary)
-        ary.any? { |prefix| env.request.path.starts_with? prefix }
+      def requesting_static_file?(context)
+        STATIC_DIRS.any? { |prefix| context.request.path.starts_with? prefix }
       end
 
-      def requesting_static_file(env)
-        request_path_startswith env, STATIC_DIRS
-      end
-
-      def call(env)
-        if requesting_static_file(env)
-          file = FS.get?(env.request.path)
-          return call_next(env) if file.nil?
+      def call(context : HTTP::Server::Context)
+        if requesting_static_file?(context)
+          file = FS.get?(context.request.path)
+          return call_next(context) if file.nil?
 
           slice = Bytes.new file.size
           file.read slice
-          return send_file(env, slice, MIME.from_filename(file.path))
+          return send_file(context, slice, MIME.from_filename(file.path))
         end
-        call_next env
+        call_next context
       end
     end
   end
