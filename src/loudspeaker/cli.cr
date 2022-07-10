@@ -1,4 +1,5 @@
 require "clim"
+require "./web"
 
 macro common_option
   option "-c PATH", "--config=PATH", type: String,
@@ -14,11 +15,13 @@ module Loudspeaker
       version "Version #{Loudspeaker::VERSION}", short: "-v"
       common_option
       run do |opts|
-        puts "Welcome to Loudspeaker!"
+        puts "Loudspeaker!"
         puts
 
         # empty ARGV so it won't be passed to Kemal
         ARGV.clear
+
+        Loudspeaker::Web.start
       end
     end
   end
