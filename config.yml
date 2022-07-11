@@ -1,3 +1,5 @@
+secret_key_base: dbffa762db3dfb09b28e4f937e8bf281366c014d2eec734e25fa37952af34d371ad16b9b8e0e8926d4ac691aa5c0303c2542cc3e2af837a0180553cd
+
 logger:
   level: debug
   format: text

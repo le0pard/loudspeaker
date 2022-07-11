@@ -1,5 +1,6 @@
 require "totem"
 require "dexter"
+require "redis"
 
 module Loudspeaker
   # config structures
@@ -8,6 +9,14 @@ module Loudspeaker
 
     property level : String
     property format : String
+  end
+
+  struct ConfigInfoRedis
+    include JSON::Serializable
+
+    property url : String
+    property pool_size : Int32
+    property pool_timeout : Int32
   end
 
   struct ConfigInfoWeb
@@ -21,13 +30,17 @@ module Loudspeaker
   struct ConfigInfo
     include JSON::Serializable
 
+    property secret_key_base : String
+
     property logger : ConfigInfoLogger
+    property redis : ConfigInfoRedis
     property web : ConfigInfoWeb
   end
 
   # config instance
   class Config
     getter config : ConfigInfo
+    getter redis_pool : Redis::PooledClient
 
     @@instance : Config?
 
@@ -46,6 +59,9 @@ module Loudspeaker
       # defaults
       totem.set_default("logger.level", "info")
       totem.set_default("logger.format", "text")
+      totem.set_default("redis.url", "redis://127.0.0.1:6379/0")
+      totem.set_default("redis.pool_size", 20)
+      totem.set_default("redis.pool_timeout", 5)
       totem.set_default("web.enabled", true)
       totem.set_default("web.host_binding", "0.0.0.0")
       totem.set_default("web.port", 8000)
@@ -59,6 +75,7 @@ module Loudspeaker
       @config = totem.mapping(ConfigInfo)
       # prepare stuff
       init_logger
+      @redis_pool = init_redis_pool
     end
 
     private def init_logger
@@ -72,6 +89,14 @@ module Loudspeaker
       Log.dexter.configure(log_level, backend)
     end
 
+    private def init_redis_pool
+      Redis::PooledClient.new(
+        url: @config.redis.url,
+        pool_size: @config.redis.pool_size,
+        pool_timeout: @config.redis.pool_size
+      )
+    end
+
     private def self.instance
       @@instance.not_nil!
     end
@@ -82,6 +107,10 @@ module Loudspeaker
 
     def self.config
       instance.config
+    end
+
+    def self.redis
+      instance.redis_pool
     end
   end
 end

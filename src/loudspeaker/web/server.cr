@@ -2,6 +2,7 @@ require "kemal"
 require "kemal-session"
 require "../config"
 require "./handlers/*"
+require "./session/*"
 
 module Loudspeaker
   module Web
@@ -12,6 +13,18 @@ module Loudspeaker
         # Matches GET "http://host:port/"
         get "/" do
           "Hello World!"
+        end
+
+        get "/set" do |env|
+          env.session.int("number", rand(100)) # set the value of "number"
+          "Random number set."
+        end
+
+        get "/get" do |env|
+          next("no number") unless env.session.int?("number")
+
+          num = env.session.int("number") # get the value of "number"
+          "Value of random number is #{num}."
         end
 
         static_headers do |response|
@@ -31,10 +44,13 @@ module Loudspeaker
         add_handler Loudspeaker::Web::LogHandler.new
 
         Kemal::Session.config do |config|
-          config.cookie_name = "__loudspeaker_session"
-          config.secret = "a_secret"
+          config.cookie_name = "_loudspeaker_session"
+          config.secret = Config.config.secret_key_base
+          config.samesite = HTTP::Cookie::SameSite::Strict
           config.timeout = 365.days
-          # config.engine = Session::RedisEngine.new(host: "localhost", port: 6379, key_prefix: "session:")
+          config.engine = Loudspeaker::Web::Session::RedisEngine.new(
+            client: Config.redis
+          )
         end
       end
 
