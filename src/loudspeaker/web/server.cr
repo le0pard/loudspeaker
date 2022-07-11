@@ -2,6 +2,7 @@ require "kemal"
 require "kemal-session"
 require "../config"
 require "./handlers/*"
+require "./routes/*"
 require "./session/*"
 
 module Loudspeaker
@@ -10,22 +11,8 @@ module Loudspeaker
       Log = ::Log.for(self)
 
       def initialize
-        # Matches GET "http://host:port/"
-        get "/" do
-          "Hello World!"
-        end
-
-        get "/set" do |env|
-          env.session.int("number", rand(100)) # set the value of "number"
-          "Random number set."
-        end
-
-        get "/get" do |env|
-          next("no number") unless env.session.int?("number")
-
-          num = env.session.int("number") # get the value of "number"
-          "Value of random number is #{num}."
-        end
+        # routes
+        Loudspeaker::Web::Routes::Auth.new
 
         static_headers do |response|
           response.headers.add("Access-Control-Allow-Origin", "*")
