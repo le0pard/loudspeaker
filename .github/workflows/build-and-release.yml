@@ -25,3 +25,6 @@ jobs:
 
       - name: Run tests
         run: crystal spec --order random
+
+      - name: Build binary (testing)
+        run: shards build --release
