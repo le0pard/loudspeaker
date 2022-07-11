@@ -86,7 +86,7 @@ module Loudspeaker
               ex: Kemal::Session.config.timeout.total_seconds.to_i
             )
           end
-          return @cache
+          @cache
         end
 
         def save_cache
@@ -98,7 +98,7 @@ module Loudspeaker
         end
 
         def is_in_cache?(session_id)
-          return session_id == @cached_session_id
+          session_id == @cached_session_id
         end
 
         def create_session(session_id : String)
@@ -135,7 +135,7 @@ module Loudspeaker
             arr << session
           end
 
-          return arr
+          arr
         end
 
         def each_session
