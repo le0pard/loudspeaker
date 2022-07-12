@@ -8,7 +8,7 @@ module Loudspeaker
     module AVCodec
       extend self
 
-      def version
+      def version : String
         v = AVCodecBinding.avcodec_version
         "#{v >> 16}.#{(v & 0x00FF00) >> 8}.#{v & 0xFF}"
       end
