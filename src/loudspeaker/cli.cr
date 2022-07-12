@@ -1,6 +1,5 @@
 require "clim"
 require "./config"
-require "./libav/*"
 require "./web"
 
 macro common_option
