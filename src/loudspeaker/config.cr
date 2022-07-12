@@ -4,15 +4,21 @@ require "redis"
 
 module Loudspeaker
   # config structures
+  struct ConfigInfoDatabase
+    include YAML::Serializable
+
+    property path : String
+  end
+
   struct ConfigInfoLogger
-    include JSON::Serializable
+    include YAML::Serializable
 
     property level : String
     property format : String
   end
 
   struct ConfigInfoRedis
-    include JSON::Serializable
+    include YAML::Serializable
 
     property url : String
     property pool_size : Int32
@@ -20,7 +26,7 @@ module Loudspeaker
   end
 
   struct ConfigInfoWeb
-    include JSON::Serializable
+    include YAML::Serializable
 
     property enabled : Bool
     property host_binding : String
@@ -28,10 +34,11 @@ module Loudspeaker
   end
 
   struct ConfigInfo
-    include JSON::Serializable
+    include YAML::Serializable
 
     property secret_key_base : String
 
+    property database : ConfigInfoDatabase
     property logger : ConfigInfoLogger
     property redis : ConfigInfoRedis
     property web : ConfigInfoWeb
@@ -55,23 +62,45 @@ module Loudspeaker
 
     private def initialize(config_file : String?)
       totem = Totem.new("config", nil, [".", "~/.loudspeaker"])
-      totem.automatic_env("LOUDSPEAKER")
       # defaults
-      totem.set_default("logger.level", "info")
-      totem.set_default("logger.format", "text")
-      totem.set_default("redis.url", "redis://127.0.0.1:6379/0")
-      totem.set_default("redis.pool_size", 20)
-      totem.set_default("redis.pool_timeout", 5)
-      totem.set_default("web.enabled", true)
-      totem.set_default("web.host_binding", "0.0.0.0")
-      totem.set_default("web.port", 8000)
+      totem.set_defaults({
+        "database" => {
+          "path" => "~/.loudspeaker/database.sqlite",
+        },
+        "logger" => {
+          "level"  => "info",
+          "format" => "text",
+        },
+        "redis" => {
+          "url"          => "redis://127.0.0.1:6379/0",
+          "pool_size"    => 20,
+          "pool_timeout" => 5,
+        },
+        "web" => {
+          "enabled"      => true,
+          "host_binding" => "0.0.0.0",
+          "port"         => 8000,
+        },
+      })
+      # envs
+      totem.automatic_env("LOUDSPEAKER")
+      totem.bind_env("secret_key_base", "SECRET_KEY_BASE")
+      totem.bind_env("database.path", "DATABASE_PATH")
+      totem.bind_env("logger.level", "LOGGER_LEVEL")
+      totem.bind_env("logger.format", "LOGGER_FORMAT")
+      totem.bind_env("redis.url", "REDIS_URL")
+      totem.bind_env("redis.pool_size", "REDIS_POOL_SIZE")
+      totem.bind_env("redis.pool_timeout", "REDIS_POOL_TIMEOUT")
+      totem.bind_env("web.enabled", "WEB_ENABLED")
+      totem.bind_env("web.host_binding", "WEB_HOST_BINDING")
+      totem.bind_env("web.port", "WEB_PORT")
       # autoload
       if config_file.nil?
         totem.load!
       else
         totem = Totem.from_file config_file
       end
-
+      # config mapping
       @config = totem.mapping(ConfigInfo)
       # prepare stuff
       init_logger
