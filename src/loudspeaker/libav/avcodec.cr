@@ -1,4 +1,4 @@
-require "./libavcodec"
+require "./bindings/libavcodec"
 
 module Loudspeaker
   module LibAV
@@ -6,7 +6,7 @@ module Loudspeaker
       extend self
 
       def version : String
-        v = LibAVCodec.avcodec_version
+        v = Bindings::LibAVCodec.avcodec_version
         "#{v >> 16}.#{(v & 0x00FF00) >> 8}.#{v & 0xFF}"
       end
     end
