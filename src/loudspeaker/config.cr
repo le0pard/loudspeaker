@@ -93,7 +93,7 @@ module Loudspeaker
       Redis::PooledClient.new(
         url: @config.redis.url,
         pool_size: @config.redis.pool_size,
-        pool_timeout: @config.redis.pool_size
+        pool_timeout: @config.redis.pool_timeout
       )
     end
 
