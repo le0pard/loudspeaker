@@ -1,5 +1,6 @@
 require "clim"
 require "./config"
+require "./utils"
 require "./web"
 
 macro common_option
@@ -23,9 +24,38 @@ module Loudspeaker
         # empty ARGV so it won't be passed to Kemal
         ARGV.clear
 
-        Config.load(opts.config)
+        quit_signal = Channel(Nil).new
 
-        Loudspeaker::Web.start
+        begin
+          Config.load(opts.config)
+        rescue e
+          Utils.teardown_with_error(e, "Error to setup configuration")
+        end
+
+        web_server = Loudspeaker::Web::Server.new
+
+        spawn do
+          begin
+            web_server.start
+          rescue e
+            Utils.teardown_with_error(e, "Error to start web server")
+          end
+        end
+
+        terminate = Proc(Signal, Nil).new do |signal|
+          Log.info { "[SIG#{signal}] received graceful stop" }
+          web_server.stop
+          Utils.teardown
+          quit_signal.send(nil)
+        end
+
+        {% for signal in %w[HUP TERM INT QUIT] %}
+          Signal::{{signal.id}}.trap &terminate
+        {% end %}
+
+        quit_signal.receive
+
+        Log.info { "Stopped Loudspeaker" }
       end
     end
   end

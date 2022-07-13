@@ -1,6 +1,7 @@
 require "totem"
 require "dexter"
 require "redis"
+require "./database"
 
 module Loudspeaker
   # config structures
@@ -47,6 +48,7 @@ module Loudspeaker
   # config instance
   class Config
     getter config : ConfigInfo
+    getter db : Database
     getter redis_pool : Redis::PooledClient
 
     @@instance : Config?
@@ -105,6 +107,7 @@ module Loudspeaker
       # prepare stuff
       init_logger
       @redis_pool = init_redis_pool
+      @db = init_database
     end
 
     private def init_logger
@@ -126,6 +129,10 @@ module Loudspeaker
       )
     end
 
+    private def init_database
+      Database.new(@config.database.path)
+    end
+
     private def self.instance
       @@instance.not_nil!
     end
@@ -140,6 +147,10 @@ module Loudspeaker
 
     def self.redis
       instance.redis_pool
+    end
+
+    def self.db
+      instance.db
     end
   end
 end

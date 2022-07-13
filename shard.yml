@@ -46,8 +46,10 @@ dependencies:
    github: hkalexling/mg
    branch: master
   kemal:
-    github: kemalcr/kemal
-    version: 1.2.0
+    github: le0pard/kemal
+    branch: disable-signals
+    # github: kemalcr/kemal
+    # version: 1.2.0
   kemal-session:
     github: kemalcr/kemal-session
     version: 1.0.0
