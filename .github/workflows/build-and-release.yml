@@ -8,7 +8,10 @@ env:
 jobs:
   build-and-release:
     name: "Build and Release"
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Download source
         uses: actions/checkout@v2
