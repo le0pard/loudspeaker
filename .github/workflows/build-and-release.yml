@@ -22,12 +22,18 @@ jobs:
           crystal: ${{ env.GO_VERSION }}
 
       - name: Install dependencies
+        if: ${{ matrix.os != 'windows-latest' }}
         run: shards install
+
+      - name: Install dependencies
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: shards install --production
 
       - name: Run format check
         run: crystal tool format --check
 
       - name: Run linter
+        if: ${{ matrix.os != 'windows-latest' }}
         run: crystal bin/ameba.cr
 
       - name: Run tests
