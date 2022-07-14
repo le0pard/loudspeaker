@@ -31,7 +31,4 @@ jobs:
         run: crystal spec --order random
 
       - name: Build binary (testing)
-        run: |
-          shards build --release --progress --static --error-trace
-          shards build --release --progress --error-trace --cross-compile --target='aarch64-linux-gnu' -o bin/loudspeaker-arm64v8
-          shards build --release --progress --error-trace --cross-compile --target='arm-linux-gnueabihf' -o bin/loudspeaker-arm32v7
+        run: shards build --release --progress --static --error-trace
