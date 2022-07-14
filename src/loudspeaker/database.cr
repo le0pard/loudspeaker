@@ -23,14 +23,14 @@ module Loudspeaker
       @db.close
     end
 
-    def migrate
-      mg = MG::Migration.new @db
-      mg.migrate
-    end
-
     def reconnect
       close
       @db = open
+    end
+
+    private def migrate
+      mg = MG::Migration.new @db
+      mg.migrate
     end
   end
 end

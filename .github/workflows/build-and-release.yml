@@ -28,4 +28,4 @@ jobs:
         run: crystal spec --order random
 
       - name: Build binary (testing)
-        run: shards build --release
+        run: shards build --release --progress --static --error-trace
