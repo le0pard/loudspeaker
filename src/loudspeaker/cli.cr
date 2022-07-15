@@ -1,7 +1,18 @@
 require "clim"
+require "colorize"
 require "./config"
-require "./utils"
 require "./web"
+
+def teardown
+  Loudspeaker::Config.db.close
+end
+
+def teardown_with_error(exception : Exception, message : String)
+  puts message.colorize(:red)
+  puts exception.colorize(:red)
+  teardown
+  Process.exit 1
+end
 
 macro common_option
   option "-c PATH", "--config=PATH", type: String,
@@ -29,7 +40,7 @@ module Loudspeaker
         begin
           Config.load(opts.config)
         rescue e
-          Utils.teardown_with_error(e, "Error to setup configuration")
+          teardown_with_error(e, "Error to setup configuration")
         end
 
         web_server = Loudspeaker::Web::Server.new
@@ -38,14 +49,14 @@ module Loudspeaker
           begin
             web_server.start
           rescue e
-            Utils.teardown_with_error(e, "Error to start web server")
+            teardown_with_error(e, "Error to start web server")
           end
         end
 
         terminate = Proc(Signal, Nil).new do |signal|
           Log.info { "[SIG#{signal}] received graceful stop" }
           web_server.stop
-          Utils.teardown
+          teardown
           quit_signal.send(nil)
         end
 
