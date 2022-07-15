@@ -12,7 +12,7 @@ module Loudspeaker
 
       def initialize
         # routes
-        Loudspeaker::Web::Routes::Auth.new
+        Loudspeaker::Web::Routes::Main.new
 
         static_headers do |response|
           response.headers.add("Access-Control-Allow-Origin", "*")

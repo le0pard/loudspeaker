@@ -1,7 +1,7 @@
 module Loudspeaker
   module Web
     module Routes
-      struct Auth
+      struct Main
         Log = ::Log.for(self)
 
         def initialize
