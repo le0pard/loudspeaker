@@ -51,10 +51,13 @@ module Loudspeaker
         {% if flag?(:release) %}
           Kemal.config.env = "production"
         {% end %}
-        Kemal.config.disable_trap_signal = true
         Kemal.config.host_binding = Config.config.web.host_binding
         Kemal.config.port = Config.config.web.port
-        Kemal.run
+        Kemal.run(
+          Config.config.web.port,
+          nil,
+          trap_signal: false
+        )
       end
 
       def stop
