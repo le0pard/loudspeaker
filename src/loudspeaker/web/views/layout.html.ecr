@@ -1,0 +1,14 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello</title>
+
+  <% {% if flag?(:release) %} %>
+  <% {% else %} %>
+    <script type="module" src="http://localhost:5173/main.js"></script>
+  <% {% end %} %>
+</head>
+<body>
+  <%= content %>
+</body>
+</html>

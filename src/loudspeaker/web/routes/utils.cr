@@ -3,7 +3,7 @@ macro layout(name)
     page = {{name}}
     render "src/loudspeaker/web/views/#{{{name}}}.html.ecr", "src/loudspeaker/web/views/layout.html.ecr"
   rescue e
-    Logger.error(exception: e) { e.to_s }
+    Log.error(exception: e) { e.to_s }
     page = "Error"
     render "src/loudspeaker/web/views/message.html.ecr", "src/loudspeaker/web/views/layout.html.ecr"
   end

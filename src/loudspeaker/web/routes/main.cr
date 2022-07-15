@@ -1,3 +1,5 @@
+require "./utils"
+
 module Loudspeaker
   module Web
     module Routes
@@ -6,19 +8,19 @@ module Loudspeaker
 
         def initialize
           get "/" do
-            "Hello World!"
+            layout "home"
           end
 
           get "/set" do |env|
             env.session.int("number", rand(100)) # set the value of "number"
-            "Random number set."
+            layout "home"
           end
 
           get "/get" do |env|
             next("no number") unless env.session.int?("number")
 
-            num = env.session.int("number") # get the value of "number"
-            "Value of random number is #{num}."
+            env.session.int("number") # get the value of "number"
+            layout "home"
           end
         end
       end
