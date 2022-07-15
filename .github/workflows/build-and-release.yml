@@ -18,8 +18,17 @@ jobs:
         with:
           crystal: ${{ env.GO_VERSION }}
 
-      - name: Install dependencies
+      - name: Install Node.JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.3.0'
+          cache: 'yarn'
+
+      - name: Install Crystal dependencies
         run: shards install
+
+      - name: Install JavaScript dependencies
+        run: yarn install --immutable
 
       - name: Run format check
         run: crystal tool format --check
@@ -27,8 +36,14 @@ jobs:
       - name: Run linter
         run: crystal bin/ameba.cr
 
+      - name: Lint JavaScript
+        run: yarn lint
+
       - name: Run tests
         run: crystal spec --order random
+
+      - name: Build JavaScript
+        run: yarn build
 
       - name: Build binary (testing)
         run: shards build --release --progress --static --error-trace

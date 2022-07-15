@@ -1,0 +1,2 @@
+cli: shards run
+front: yarn dev

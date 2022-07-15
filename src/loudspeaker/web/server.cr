@@ -52,7 +52,6 @@ module Loudspeaker
           Kemal.config.env = "production"
         {% end %}
         Kemal.config.host_binding = Config.config.web.host_binding
-        Kemal.config.port = Config.config.web.port
         Kemal.run(
           Config.config.web.port,
           nil,

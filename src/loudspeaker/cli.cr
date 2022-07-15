@@ -32,8 +32,7 @@ module Loudspeaker
       run do |opts|
         Log.info { "Starting Loudspeaker" }
 
-        # empty ARGV so it won't be passed to Kemal
-        ARGV.clear
+        ARGV.clear # empty ARGV so it won't be passed to Kemal
 
         quit_signal = Channel(Nil).new
 
