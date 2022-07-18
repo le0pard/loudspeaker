@@ -3,7 +3,7 @@ require "kemal"
 module Loudspeaker
   module Web
     class LogHandler < Kemal::BaseLogHandler
-      Log = ::Log.for(self)
+      Log = ::Log.for("web")
 
       def call(context : HTTP::Server::Context)
         elapsed_time = Time.measure { call_next context }

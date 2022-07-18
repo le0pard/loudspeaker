@@ -41,8 +41,8 @@ shards:
     version: 1.6.0
 
   kemal:
-    git: https://github.com/le0pard/kemal.git
-    version: 1.1.2+git.commit.db87d8270913402654528e23677d09027396f48b
+    git: https://github.com/kemalcr/kemal.git
+    version: 1.1.2+git.commit.1a45f54c6c42159d266e278545c2969dc79f5243
 
   kemal-session:
     git: https://github.com/kemalcr/kemal-session.git
